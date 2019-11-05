@@ -79,7 +79,7 @@ public class Communicator implements CommunicatorInterface {
                 socket = server.accept();
                 setMode(Mode.SENDER);
                 break;
-            } catch (SocketTimeoutException e) {
+            } catch (SocketTimeoutException|BindException e) {
                 writeToConsole("Communicator switched to receiver mode");
             } catch (SocketException ex) {
                 ex.printStackTrace();
@@ -132,6 +132,5 @@ public class Communicator implements CommunicatorInterface {
     public String receive() throws IOException {
         return in.readLine();
     }
-
 
 }

@@ -110,12 +110,18 @@ class PlayerTest {
 
     @Test
     void integrationTest() throws ExecutionException, InterruptedException {
+        int port = 4006;
         final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        Player player1 = new Player("player1", new Communicator(4006), TEST_MESSAGE);
+        Player player1 = new Player("player1", new Communicator(port), TEST_MESSAGE);
         CompletableFuture future1 = CompletableFuture.runAsync(() -> {
             player1.run();
         });
-        Player player2 = new Player("player2", new Communicator(4006), TEST_MESSAGE);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Player player2 = new Player("player2", new Communicator(port), TEST_MESSAGE);
         CompletableFuture future2 = CompletableFuture.runAsync(() -> {
             player2.run();
         });

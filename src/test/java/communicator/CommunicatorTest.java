@@ -19,7 +19,8 @@ class CommunicatorTest {
 
     @Test
     void connect1() throws ExecutionException, InterruptedException {
-        Communicator communicator1 = new Communicator(4004);
+        int port = 4004;
+        Communicator communicator1 = new Communicator(port);
         CompletableFuture future1 = CompletableFuture.runAsync(() -> {
             try {
                 communicator1.connect();
@@ -27,7 +28,7 @@ class CommunicatorTest {
                 e.printStackTrace();
             }
         });
-        Communicator communicator2 = new Communicator(4004);
+        Communicator communicator2 = new Communicator(port);
         CompletableFuture future2 = CompletableFuture.runAsync(() -> {
             try {
                 communicator2.connect();
@@ -37,13 +38,14 @@ class CommunicatorTest {
         });
         CompletableFuture.allOf(future1, future2).thenAccept(v -> {
             Assertions.assertTrue(communicator1.getMode().equals(Mode.SENDER) && communicator2.getMode().equals(Mode.RECEIVER)
-                    || communicator2.getMode().equals(Mode.RECEIVER) && communicator1.getMode().equals(Mode.SENDER));
+                    || communicator2.getMode().equals(Mode.SENDER) && communicator1.getMode().equals(Mode.RECEIVER));
         }).get();
     }
 
     @Test
     void sendAndReceive() throws ExecutionException, InterruptedException {
-        Communicator communicator1 = new Communicator(4005);
+        int port = 4005;
+        Communicator communicator1 = new Communicator(port);
         String testMessage = "testMessage";
         CompletableFuture future1 = CompletableFuture.runAsync(() -> {
             try {
@@ -53,7 +55,7 @@ class CommunicatorTest {
                 e.printStackTrace();
             }
         });
-        Communicator communicator2 = new Communicator(4005);
+        Communicator communicator2 = new Communicator(port);
         CompletableFuture future2 = CompletableFuture.runAsync(() -> {
             try {
                 communicator2.connect();
